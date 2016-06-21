@@ -1,12 +1,12 @@
 ### 浏览
 
-![histogram_week.gif](https://github.com/billy96322/HistogramView/blob/master/screen_capture/histogram_week.gif)
+![histogram_week.gif](https://github.com/billy96322/HistogramView/blob/master/screen_capture/histogram_week.gif "显示一周")
 
 
-![hitogram_month.gif](https://github.com/billy96322/HistogramView/blob/master/screen_capture/hitogram_month.gif)
+![hitogram_month.gif](https://github.com/billy96322/HistogramView/blob/master/screen_capture/hitogram_month.gif "显示一个月")
 
 
-![histogram_move.gif](https://github.com/billy96322/HistogramView/blob/master/screen_capture/histogram_move.gif)
+![histogram_move.gif](https://github.com/billy96322/HistogramView/blob/master/screen_capture/histogram_move.gif "点击回调及效果")
 
 ### 特性
 
