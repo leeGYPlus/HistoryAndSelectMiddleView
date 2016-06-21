@@ -1,12 +1,12 @@
 ### 浏览
 
-![histogram_week.gif](http://upload-images.jianshu.io/upload_images/1796947-ba3b83d7b036c154.gif?imageMogr2/auto-orient/strip)
+![histogram_week.gif](https://github.com/billy96322/HistogramView/blob/master/screen_capture/histogram_week.gif)
 
 
-![hitogram_month.gif](http://upload-images.jianshu.io/upload_images/1796947-7a09f3ec9c120607.gif?imageMogr2/auto-orient/strip)
+![hitogram_month.gif](https://github.com/billy96322/HistogramView/blob/master/screen_capture/hitogram_month.gif)
 
 
-![histogram_move.gif](http://upload-images.jianshu.io/upload_images/1796947-dd65e25171918672.gif?imageMogr2/auto-orient/strip)
+![histogram_move.gif](https://github.com/billy96322/HistogramView/blob/master/screen_capture/histogram_move.gif)
 
 ### 特性
 
