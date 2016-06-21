@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="ColumnView">
+
+        <attr name="column_color" format="color"/>
+
+    </declare-styleable>
+
+    <declare-styleable name="HistogramView">
+
+        <attr name="column_per_screen" format="integer"/>
+        <attr name="histogram_color" format="color"/>
+        <attr name="date_text_color" format="color"/>
+        <attr name="date_text_size" format="dimension"/>
+
+    </declare-styleable>
+
+</resources>
