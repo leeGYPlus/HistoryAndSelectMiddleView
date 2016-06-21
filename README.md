@@ -18,7 +18,7 @@
 
 在布局文件中添加
 
-````
+```Java
 <com.salmonzhg.histogramview_demo.views.HistogramView
     android:id="@+id/histogram"
     android:layout_width="match_parent"
@@ -26,10 +26,10 @@
     app:date_text_color="@color/colorPrimary"
     app:date_text_size="14sp"
     app:histogram_color="@color/colorPrimaryDark" />
-````
+```
 在控制器中添加
 
-````
+```Java
 
     HistogramView.HistogramEntity[] entities = new HistogramView.HistogramEntity[30];
     for (int i = 0; i < entities.length; i++) {
@@ -51,4 +51,4 @@
     mHistogram.setData(entities);
 
 
-````
+```
