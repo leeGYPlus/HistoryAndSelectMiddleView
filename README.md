@@ -1,12 +1,12 @@
 ### 浏览
 
-![histogram_week.gif](http://upload-images.jianshu.io/upload_images/1796947-ba3b83d7b036c154.gif?imageMogr2/auto-orient/strip)
+![histogram_week.gif](https://github.com/billy96322/HistogramView/blob/master/screen_capture/histogram_week.gif "显示一周")
 
 
-![hitogram_month.gif](http://upload-images.jianshu.io/upload_images/1796947-7a09f3ec9c120607.gif?imageMogr2/auto-orient/strip)
+![hitogram_month.gif](https://github.com/billy96322/HistogramView/blob/master/screen_capture/hitogram_month.gif "显示一个月")
 
 
-![histogram_move.gif](http://upload-images.jianshu.io/upload_images/1796947-dd65e25171918672.gif?imageMogr2/auto-orient/strip)
+![histogram_move.gif](https://github.com/billy96322/HistogramView/blob/master/screen_capture/histogram_move.gif "点击回调及效果")
 
 ### 特性
 
@@ -18,7 +18,7 @@
 
 在布局文件中添加
 
-````
+```Java
 <com.salmonzhg.histogramview_demo.views.HistogramView
     android:id="@+id/histogram"
     android:layout_width="match_parent"
@@ -26,10 +26,10 @@
     app:date_text_color="@color/colorPrimary"
     app:date_text_size="14sp"
     app:histogram_color="@color/colorPrimaryDark" />
-````
+```
 在控制器中添加
 
-````
+```Java
 
     HistogramView.HistogramEntity[] entities = new HistogramView.HistogramEntity[30];
     for (int i = 0; i < entities.length; i++) {
@@ -51,4 +51,4 @@
     mHistogram.setData(entities);
 
 
-````
+```
