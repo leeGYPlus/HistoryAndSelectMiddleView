@@ -123,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
             days[index] = i;
             index++;
         }
-
         for (int i = 1; i <= DateUtils.dateToday(); i++) {
             days[index] = i;
             index++;
