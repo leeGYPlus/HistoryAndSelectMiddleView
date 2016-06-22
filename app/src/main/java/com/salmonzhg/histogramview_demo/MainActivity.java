@@ -128,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
             days[index] = i;
             index++;
         }
+
         return days;
     }
 }
