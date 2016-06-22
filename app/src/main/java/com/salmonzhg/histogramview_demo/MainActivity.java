@@ -3,44 +3,85 @@ package com.salmonzhg.histogramview_demo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.salmonzhg.histogramview_demo.utils.DateUtils;
+import com.salmonzhg.histogramview_demo.utils.StepConvertUtil;
 import com.salmonzhg.histogramview_demo.views.HistogramView;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "SalmonZhg";
+    private RadioGroup mRadioGroup;
     private HistogramView mHistogram;
+    private TextView mTextDate, mTextStep, mTextDistance, mTextCalories;
+    private RadioButton mRadioButtonWeek, mRadioButtonMonth;
     private Toast mToast;
+    private HistogramView.HistogramEntity[] mData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         mHistogram = (HistogramView) findViewById(R.id.histogram);
+        mRadioGroup = (RadioGroup) findViewById(R.id.time_radio_group);
+        mTextDate = (TextView) findViewById(R.id.text_date);
+        mTextStep = (TextView) findViewById(R.id.text_step);
+        mTextDistance = (TextView) findViewById(R.id.text_distance);
+        mTextCalories = (TextView) findViewById(R.id.text_calories);
+        mRadioButtonWeek = ((RadioButton) findViewById(R.id.radio_week_button));
+        mRadioButtonMonth = ((RadioButton) findViewById(R.id.radio_month_button));
 
-        Button buttonPlay = (Button) findViewById(R.id.button_play);
-
-        final HistogramView.HistogramEntity[] data = genRandomMonthData();
-
-        buttonPlay.setOnClickListener(new View.OnClickListener() {
+        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                mHistogram.setData(data);
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                mRadioButtonMonth.setClickable(false);
+                mRadioButtonWeek.setClickable(false);
+                switch (checkedId) {
+                    case R.id.radio_week_button:
+                        mHistogram.setData(mData = genRandomWeekData());
+                        break;
+                    case R.id.radio_month_button:
+                        mHistogram.setData(mData = genRandomMonthData());
+                        break;
+                }
             }
         });
 
         mHistogram.setSelectListener(new HistogramView.OnSelectListener() {
             @Override
             public void onSelected(int index) {
-                showToast(index + " selected" + "\nvalue: " + data[index].count);
+                showDetail(mData[index]);
             }
         });
 
+        mHistogram.setAnimationListener(new HistogramView.AnimationListener() {
+            @Override
+            public void onAnimationDone() {
+                mRadioButtonMonth.setClickable(true);
+                mRadioButtonWeek.setClickable(true);
+                mHistogram.setCheck(mData.length-1);
+            }
+        });
+
+        mHistogram.post(new Runnable() {
+            @Override
+            public void run() {
+                ((RadioButton) findViewById(R.id.radio_week_button)).setChecked(true);
+            }
+        });
+    }
+
+    private void showDetail(HistogramView.HistogramEntity data) {
+        mTextDate.setText(data.time);
+        mTextStep.setText(String.valueOf(data.count));
+        mTextDistance.setText(StepConvertUtil.stepToDiatance(StepConvertUtil.MALE,
+                StepConvertUtil.DEFAULT_TALL, data.count)+"");
+        mTextCalories.setText(StepConvertUtil.stepToCalories(StepConvertUtil.DEFAULT_TALL,
+                StepConvertUtil.DEFAULT_WEIGHT, data.count)+"");
     }
 
     private void showToast(String s) {

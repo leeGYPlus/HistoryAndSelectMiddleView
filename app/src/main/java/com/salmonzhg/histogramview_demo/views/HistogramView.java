@@ -13,7 +13,6 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
 import com.salmonzhg.histogramview_demo.R;
 import com.salmonzhg.histogramview_demo.utils.DisplayUtil;
 
@@ -39,24 +38,14 @@ public class HistogramView extends HorizontalScrollView {
     private int mIndex = 0;
     private boolean isPlaying = false;
     private int mLastSelected = 0;
-    private OnSelectListener mListener;
+    private OnSelectListener mSelectListener;
     private OnClickListener mColumnListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            try {
-                int index = v.getId();
-                ColumnView columnOld = (ColumnView) llHistogram.getChildAt(mLastSelected);
-                columnOld.setSelect(false);
-                ColumnView columnNew = (ColumnView) llHistogram.getChildAt(index);
-                columnNew.setSelect(true);
-                mLastSelected = index;
-            } catch (Exception e) {
-                return;
-            }
-            if (mListener != null)
-                mListener.onSelected(v.getId());
+            setCheck(v.getId());
         }
     };
+    private AnimationListener mAnimationListener;
 
     public HistogramView(Context context) {
         super(context);
@@ -105,6 +94,8 @@ public class HistogramView extends HorizontalScrollView {
             return;
         }
         mColumnWid = getMeasuredWidth() / mColumnPerScreen;
+
+        mLastSelected = 0;
 
         int max = maxInArray(data);
 
@@ -167,12 +158,14 @@ public class HistogramView extends HorizontalScrollView {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                isPlaying = false;
                 // 滑动到最右侧
                 fullScroll(FOCUS_RIGHT);
                 // 默认选择最右边的那个
                 ColumnView v = (ColumnView) llHistogram.getChildAt(llHistogram.getChildCount() - 1);
                 v.performClick();
+                isPlaying = false;
+                if (mAnimationListener != null)
+                    mAnimationListener.onAnimationDone();
             }
         });
         valueAnimator.start();
@@ -224,7 +217,6 @@ public class HistogramView extends HorizontalScrollView {
         initTime();
     }
 
-
     private int maxInArray(HistogramEntity[] array) {
         int[] temp = new int[array.length];
         for (int i = 0; i < temp.length; i++) {
@@ -254,6 +246,20 @@ public class HistogramView extends HorizontalScrollView {
         mDefaultDateText = defaultDateTextArray;
     }
 
+    public void setCheck(int position) {
+        if (isPlaying || llHistogram == null)
+            return;
+        if (position < 0 || position > llHistogram.getChildCount())
+            return;
+        ColumnView columnOld = (ColumnView) llHistogram.getChildAt(mLastSelected);
+        columnOld.setSelect(false);
+        ColumnView columnNew = (ColumnView) llHistogram.getChildAt(position);
+        columnNew.setSelect(true);
+        mLastSelected = position;
+        if (mSelectListener != null)
+            mSelectListener.onSelected(position);
+    }
+
     public void setColumnPerScreen(int columnPerScreen) {
         if (columnPerScreen < 1 || columnPerScreen > 10) {
             return;
@@ -273,11 +279,19 @@ public class HistogramView extends HorizontalScrollView {
     }
 
     public void setSelectListener(OnSelectListener listener) {
-        mListener = listener;
+        mSelectListener = listener;
+    }
+
+    public void setAnimationListener(AnimationListener listener) {
+        mAnimationListener = listener;
     }
 
     public interface OnSelectListener {
         void onSelected(int index);
+    }
+
+    public interface AnimationListener {
+        void onAnimationDone();
     }
 
     public static class HistogramEntity {
@@ -286,6 +300,7 @@ public class HistogramView extends HorizontalScrollView {
 
         public HistogramEntity() {
         }
+
         public HistogramEntity(String time, int count) {
             this.time = time;
             this.count = count;

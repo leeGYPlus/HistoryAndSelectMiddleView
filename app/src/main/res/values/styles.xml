@@ -8,4 +8,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="myRadioButtonStyle">
+        <item name="android:textSize">9.299988sp</item>
+        <item name="android:textColor">#66000000</item>
+        <item name="android:gravity">center</item>
+        <item name="android:button">@null</item>
+        <item name="android:drawablePadding">4.6999817dip</item>
+    </style>
+
 </resources>
