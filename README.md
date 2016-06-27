@@ -1,14 +1,5 @@
 ### 浏览
 
-![](https://github.com/billy96322/HistogramView/blob/master/screen_capture/histogram_week.gif "显示一周")
-
-
-![](https://github.com/billy96322/HistogramView/blob/master/screen_capture/hitogram_month.gif "显示一个月")
-
-
-![](https://github.com/billy96322/HistogramView/blob/master/screen_capture/histogram_move.gif "点击回调及效果")
-
-
 ![](https://github.com/billy96322/HistogramView/blob/master/screen_capture/step_count_demo.gif "计步demo")
 
 ### 特性
