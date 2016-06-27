@@ -12,6 +12,9 @@ import com.salmonzhg.histogramview_demo.utils.DateUtils;
 import com.salmonzhg.histogramview_demo.utils.StepConvertUtil;
 import com.salmonzhg.histogramview_demo.views.HistogramView;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "SalmonZhg";
     private RadioGroup mRadioGroup;
@@ -93,19 +96,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private HistogramView.HistogramEntity[] genRandomWeekData() {
+        String[] days = daysToWeek();
         HistogramView.HistogramEntity[] result = new HistogramView.HistogramEntity[7];
         for (int i = 0; i < result.length; i++) {
 
             int num = (int) (3000 + 2000 * Math.random());
             HistogramView.HistogramEntity e = new HistogramView.HistogramEntity(
-                    DateUtils.intToWeek(i), num);
+                    days[i], num);
             result[i] = e;
         }
         return result;
     }
 
     private HistogramView.HistogramEntity[] genRandomMonthData() {
-        int[] days = daysArrayIn28();
+        String[] days = daysToDate(28);
         HistogramView.HistogramEntity[] result = new HistogramView.HistogramEntity[28];
         for (int i = 0; i < result.length; i++) {
             int num = (int) (2000 + 3000 * Math.random());
@@ -116,18 +120,38 @@ public class MainActivity extends AppCompatActivity {
         return result;
     }
 
-    private int[] daysArrayIn28() {
-        int[] days = new int[28];
-        int index = 0;
-        for (int i = DateUtils.dateBefore28Days(); i <= DateUtils.dateInLastDayInLastMonth(); i++) {
-            days[index] = i;
-            index++;
+    /**
+     * 根据天数倒退生成日期
+     *
+     * @param days 最近多少天
+     * @return
+     */
+    private String[] daysToDate(int days) {
+        if (days < 0) {
+            return new String[0];
         }
-        for (int i = 1; i <= DateUtils.dateToday(); i++) {
-            days[index] = i;
-            index++;
+        String[] dates = new String[days];
+        Calendar calendar = new GregorianCalendar();
+        calendar.add(Calendar.DATE, -days);
+        for (int i = 0; i < days; i++) {
+            calendar.add(Calendar.DATE, 1);
+            dates[i] = calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.DATE);
         }
+        return dates;
+    }
 
-        return days;
+    /**
+     * 最近一星期
+     * @return
+     */
+    private String[] daysToWeek() {
+        String[] dates = new String[7];
+        Calendar calendar = new GregorianCalendar();
+        calendar.add(Calendar.DATE, -7);
+        for (int i = 0; i < 7; i++) {
+            calendar.add(Calendar.DATE, 1);
+            dates[i] = DateUtils.intToWeek(calendar.get(Calendar.DAY_OF_WEEK));
+        }
+        return dates;
     }
 }
