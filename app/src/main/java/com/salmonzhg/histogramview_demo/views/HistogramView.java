@@ -112,10 +112,12 @@ public class HistogramView extends HorizontalScrollView {
             view.setLayoutParams(param);
             if (max != 0) {
                 view.setRatio((float) d / (float) max);
-                if (d != 0)
-                    view.setShowText(String.valueOf(d));
+//                if (d != 0)
+                view.setShowText(String.valueOf(d));
             } else {
                 view.setRatio(0);
+                // 全部为0则不显示数字
+                // view.setShowText(String.valueOf(0));
             }
             view.setId(i);
             view.setColumnColor(mHistogramColor);

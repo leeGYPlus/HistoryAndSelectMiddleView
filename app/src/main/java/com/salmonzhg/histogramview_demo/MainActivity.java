@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         calendar.add(Calendar.DATE, -days);
         for (int i = 0; i < days; i++) {
             calendar.add(Calendar.DATE, 1);
-            dates[i] = calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.DATE);
+            dates[i] = (calendar.get(Calendar.MONTH)+1) + "/" + calendar.get(Calendar.DATE);
         }
         return dates;
     }
