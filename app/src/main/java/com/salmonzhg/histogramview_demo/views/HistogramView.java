@@ -5,6 +5,9 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Handler;
+import android.os.Message;
+import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -93,6 +96,9 @@ public class HistogramView extends HorizontalScrollView {
         if (data == null || data.length == 0) {
             return;
         }
+
+        isPlaying = true;
+
         mColumnWid = getMeasuredWidth() / mColumnPerScreen;
 
         mLastSelected = 0;
@@ -139,38 +145,34 @@ public class HistogramView extends HorizontalScrollView {
         play();
     }
 
+    private static final int PLAY = 0;
+    private Handler mPlayHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case PLAY:
+                    if (mIndex >= llHistogram.getChildCount()) {
+                        // 滑动到最右侧
+                        fullScroll(FOCUS_RIGHT);
+                        // 默认选择最右边的那个
+                        ColumnView v = (ColumnView) llHistogram.getChildAt(llHistogram.getChildCount() - 1);
+                        v.performClick();
+                        isPlaying = false;
+                        mIndex = 0;
+                        if (mAnimationListener != null)
+                            mAnimationListener.onAnimationDone();
+                        break;
+                    }
+                    ColumnView v = (ColumnView) llHistogram.getChildAt(mIndex);
+                    v.startAnim();
+                    mIndex++;
+                    sendEmptyMessageDelayed(PLAY, 50);
+                    break;
+            }
+        }
+    };
     private void play() {
-        int count = llHistogram.getChildCount();
-        ValueAnimator valueAnimator = ValueAnimator.ofInt(0);
-        valueAnimator.setDuration(50);
-        valueAnimator.setRepeatCount(count);
-        valueAnimator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                mIndex = 0;
-                isPlaying = true;
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-                ColumnView v = (ColumnView) llHistogram.getChildAt(mIndex);
-                v.startAnim();
-                mIndex++;
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                // 滑动到最右侧
-                fullScroll(FOCUS_RIGHT);
-                // 默认选择最右边的那个
-                ColumnView v = (ColumnView) llHistogram.getChildAt(llHistogram.getChildCount() - 1);
-                v.performClick();
-                isPlaying = false;
-                if (mAnimationListener != null)
-                    mAnimationListener.onAnimationDone();
-            }
-        });
-        valueAnimator.start();
+        mPlayHandler.sendEmptyMessage(PLAY);
     }
 
     private void initHistogram() {

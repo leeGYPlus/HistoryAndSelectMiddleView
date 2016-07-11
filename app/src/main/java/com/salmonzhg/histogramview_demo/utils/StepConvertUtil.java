@@ -11,7 +11,7 @@ public class StepConvertUtil {
 
     // 男：0.415 * 身高(m) * 步数 = 里程(m)
     // 女：0.413 * 身高(m) * 步数 = 里程(m)
-    public static int stepToDiatance(int sex, float tall, int step) {
+    public static int stepToDistance(int sex, float tall, int step) {
         sex = sex == MALE ? MALE : FEMALE;
         tall = isTallLegal(tall) ? tall : DEFAULT_TALL;
         float k = sex == MALE ? 0.415f : 0.413f;

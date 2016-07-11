@@ -2,7 +2,6 @@ package com.salmonzhg.histogramview_demo;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -81,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     private void showDetail(HistogramView.HistogramEntity data) {
         mTextDate.setText(data.time);
         mTextStep.setText(String.valueOf(data.count));
-        mTextDistance.setText(StepConvertUtil.stepToDiatance(StepConvertUtil.MALE,
+        mTextDistance.setText(StepConvertUtil.stepToDistance(StepConvertUtil.MALE,
                 StepConvertUtil.DEFAULT_TALL, data.count)+"");
         mTextCalories.setText(StepConvertUtil.stepToCalories(StepConvertUtil.DEFAULT_TALL,
                 StepConvertUtil.DEFAULT_WEIGHT, data.count)+"");
@@ -147,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
     private String[] daysToWeek() {
         String[] dates = new String[7];
         Calendar calendar = new GregorianCalendar();
-        calendar.add(Calendar.DATE, -7);
+        calendar.add(Calendar.DATE, -8);
         for (int i = 0; i < 7; i++) {
             calendar.add(Calendar.DATE, 1);
             dates[i] = DateUtils.intToWeek(calendar.get(Calendar.DAY_OF_WEEK));
