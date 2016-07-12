@@ -138,6 +138,8 @@ public class HistogramView extends HorizontalScrollView {
             view.setTextColor(mDateTextColor);
             view.setLayoutParams(param);
             view.setText(data[i].time);
+            view.setId(i);
+            view.setOnClickListener(mColumnListener);
             llTime.addView(view);
         }
         requestLayout();
