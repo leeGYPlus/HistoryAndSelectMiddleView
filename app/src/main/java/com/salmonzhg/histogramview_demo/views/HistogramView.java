@@ -1,13 +1,9 @@
 package com.salmonzhg.histogramview_demo.views;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Handler;
 import android.os.Message;
-import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -29,6 +25,7 @@ public class HistogramView extends HorizontalScrollView {
     private static final String[] DEFAULT_DATE_TEXT = new String[]{"一", "二", "三", "四", "五", "六", "日"};
     private static final int DEFAULT_COLOR = 0XFF3F51B5;
     private static final int DEFAULT_TEXT_SIZE = 14;
+    private static final int PLAY = 0;
     private String[] mDefaultDateText = DEFAULT_DATE_TEXT;
     private int mColumnPerScreen = DEFAULT_COLUMN_PER_SCREEN;
     private int mColumnWid = 0;
@@ -49,6 +46,31 @@ public class HistogramView extends HorizontalScrollView {
         }
     };
     private AnimationListener mAnimationListener;
+    private Handler mPlayHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case PLAY:
+                    if (mIndex >= llHistogram.getChildCount()) {
+                        // 滑动到最右侧
+                        fullScroll(FOCUS_RIGHT);
+                        // 默认选择最右边的那个
+                        ColumnView v = (ColumnView) llHistogram.getChildAt(llHistogram.getChildCount() - 1);
+                        v.performClick();
+                        isPlaying = false;
+                        mIndex = 0;
+                        if (mAnimationListener != null)
+                            mAnimationListener.onAnimationDone();
+                        break;
+                    }
+                    ColumnView v = (ColumnView) llHistogram.getChildAt(mIndex);
+                    v.startAnim();
+                    mIndex++;
+                    sendEmptyMessageDelayed(PLAY, 50);
+                    break;
+            }
+        }
+    };
 
     public HistogramView(Context context) {
         super(context);
@@ -147,32 +169,6 @@ public class HistogramView extends HorizontalScrollView {
         play();
     }
 
-    private static final int PLAY = 0;
-    private Handler mPlayHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case PLAY:
-                    if (mIndex >= llHistogram.getChildCount()) {
-                        // 滑动到最右侧
-                        fullScroll(FOCUS_RIGHT);
-                        // 默认选择最右边的那个
-                        ColumnView v = (ColumnView) llHistogram.getChildAt(llHistogram.getChildCount() - 1);
-                        v.performClick();
-                        isPlaying = false;
-                        mIndex = 0;
-                        if (mAnimationListener != null)
-                            mAnimationListener.onAnimationDone();
-                        break;
-                    }
-                    ColumnView v = (ColumnView) llHistogram.getChildAt(mIndex);
-                    v.startAnim();
-                    mIndex++;
-                    sendEmptyMessageDelayed(PLAY, 50);
-                    break;
-            }
-        }
-    };
     private void play() {
         mPlayHandler.sendEmptyMessage(PLAY);
     }
