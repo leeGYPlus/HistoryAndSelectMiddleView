@@ -1,3 +1,15 @@
+### 项目说明
+ > 本项目是在 [Histogram](https://github.com/billy96322/HistogramView) 和 [橫滑列表 中间项变大第二种效果
+](http://www.jianshu.com/p/019087a0a80d)的基础上综合而成，实现了柱状图的左右滑动、仿其他 app 添加了头和尾、
+   选中屏幕中间 item 并展示相关详细数据。
+
+
+
+
+
+
+
+
 ### 浏览
 
 ![](https://github.com/billy96322/HistogramView/blob/master/screen_capture/step_count_demo.gif "计步demo")
