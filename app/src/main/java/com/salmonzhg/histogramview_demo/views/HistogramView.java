@@ -198,8 +198,9 @@ public class HistogramView extends HorizontalScrollView {
 
             //滚动至中间位置
             scrollBy(minDivider + mColumnWid * 3 / 8, 0);
-            setCheck(llHistogram.getChildAt(current + (int) mNum).getId());
-            middleItemChangedListener.middleItemChanged(current + (int) mNum);
+            Log.e("124", current + "--" + llHistogram.getChildCount());
+            setCheck(llHistogram.getChildAt(current).getId());
+            middleItemChangedListener.middleItemChanged(current);
         }
     }
 
@@ -258,7 +259,7 @@ public class HistogramView extends HorizontalScrollView {
                 // 全部为0则不显示数字
                 // view.setShowText(String.valueOf(0));
             }
-            view.setId(i);
+            view.setId(i + (int) mNum);
             view.setColumnColor(mHistogramColor);
             view.setOnClickListener(mColumnListener);
             llHistogram.addView(view);
@@ -395,7 +396,7 @@ public class HistogramView extends HorizontalScrollView {
         columnNew.setSelect(true);
         mLastSelected = position;
         if (mSelectListener != null)
-            mSelectListener.onSelected(position);
+            mSelectListener.onSelected(position - (int) mNum);
     }
 
     public void setColumnPerScreen(int columnPerScreen) {
