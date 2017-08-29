@@ -1,7 +1,9 @@
 package com.salmonzhg.histogramview_demo;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -14,7 +16,7 @@ import com.salmonzhg.histogramview_demo.views.HistogramView;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements HistogramView.onMiddleItemChangedListener {
     private static final String TAG = "SalmonZhg";
     private RadioGroup mRadioGroup;
     private HistogramView mHistogram;
@@ -27,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         mHistogram = (HistogramView) findViewById(R.id.histogram);
         mRadioGroup = (RadioGroup) findViewById(R.id.time_radio_group);
         mTextDate = (TextView) findViewById(R.id.text_date);
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         mTextCalories = (TextView) findViewById(R.id.text_calories);
         mRadioButtonWeek = ((RadioButton) findViewById(R.id.radio_week_button));
         mRadioButtonMonth = ((RadioButton) findViewById(R.id.radio_month_button));
-
+        mHistogram.setMiddleItemChangedListener(this);
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
             public void onAnimationDone() {
                 mRadioButtonMonth.setClickable(true);
                 mRadioButtonWeek.setClickable(true);
-                mHistogram.setCheck(mData.length-1);
+                mHistogram.setCheck(mData.length - 1);
             }
         });
 
@@ -81,9 +82,9 @@ public class MainActivity extends AppCompatActivity {
         mTextDate.setText(data.time);
         mTextStep.setText(String.valueOf(data.count));
         mTextDistance.setText(StepConvertUtil.stepToDistance(StepConvertUtil.MALE,
-                StepConvertUtil.DEFAULT_TALL, data.count)+"");
+                StepConvertUtil.DEFAULT_TALL, data.count) + "");
         mTextCalories.setText(StepConvertUtil.stepToCalories(StepConvertUtil.DEFAULT_TALL,
-                StepConvertUtil.DEFAULT_WEIGHT, data.count)+"");
+                StepConvertUtil.DEFAULT_WEIGHT, data.count) + "");
     }
 
     private void showToast(String s) {
@@ -134,13 +135,14 @@ public class MainActivity extends AppCompatActivity {
         calendar.add(Calendar.DATE, -days);
         for (int i = 0; i < days; i++) {
             calendar.add(Calendar.DATE, 1);
-            dates[i] = (calendar.get(Calendar.MONTH)+1) + "/" + calendar.get(Calendar.DATE);
+            dates[i] = (calendar.get(Calendar.MONTH) + 1) + "/" + calendar.get(Calendar.DATE);
         }
         return dates;
     }
 
     /**
      * 最近一星期
+     *
      * @return
      */
     private String[] daysToWeek() {
@@ -152,5 +154,11 @@ public class MainActivity extends AppCompatActivity {
             dates[i] = DateUtils.intToWeek(calendar.get(Calendar.DAY_OF_WEEK));
         }
         return dates;
+    }
+
+    @Override
+    public void middleItemChanged(int current) {
+        Log.e("position", current + "");
+//        mHistogram.getChildAt(current).setBackgroundColor(Color.YELLOW);
     }
 }

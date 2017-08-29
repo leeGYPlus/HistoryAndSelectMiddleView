@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,22 +9,29 @@
         android:id="@+id/histogram"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        app:date_text_color="#00BCD4"
-        app:date_text_size="12sp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
-        app:histogram_color="#0097A7"/>
+        android:layout_weight="1"
+        android:background="@color/red"
+        app:date_text_color="#00BCD4"
+        app:date_text_size="12sp"
+        app:histogram_color="#0097A7" />
+
+    <View
+        android:layout_width="2dp"
+        android:layout_height="12dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/colorPrimaryDark" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <FrameLayout
@@ -37,14 +43,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|left"
-                android:text="日期"/>
+                android:text="日期" />
 
             <TextView
                 android:id="@+id/text_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|right"
-                android:maxLength="20"/>
+                android:maxLength="20" />
 
         </FrameLayout>
 
@@ -57,14 +63,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|left"
-                android:text="步数"/>
+                android:text="步数" />
 
             <TextView
                 android:id="@+id/text_step"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|right"
-                android:maxLength="20"/>
+                android:maxLength="20" />
 
         </FrameLayout>
 
@@ -78,14 +84,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|left"
-                android:text="里程(千米)"/>
+                android:text="里程(千米)" />
 
             <TextView
                 android:id="@+id/text_distance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|right"
-                android:maxLength="20"/>
+                android:maxLength="20" />
 
         </FrameLayout>
 
@@ -99,14 +105,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|left"
-                android:text="消耗(卡)"/>
+                android:text="消耗(卡)" />
 
             <TextView
                 android:id="@+id/text_calories"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|right"
-                android:maxLength="20"/>
+                android:maxLength="20" />
 
         </FrameLayout>
 
@@ -117,6 +123,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
             android:orientation="horizontal">
+
             <RadioButton
                 android:id="@+id/radio_week_button"
                 android:layout_width="50dp"
@@ -126,19 +133,19 @@
                 android:gravity="center"
                 android:text="周"
                 android:textColor="#ff7b7b7b"
-                android:textSize="13.299988sp"/>
+                android:textSize="13.299988sp" />
 
             <RadioButton
                 android:id="@+id/radio_month_button"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
                 android:background="@drawable/radio_selector"
                 android:button="@null"
                 android:gravity="center"
-                android:layout_marginLeft="10dp"
                 android:text="月"
                 android:textColor="#ff7b7b7b"
-                android:textSize="13.299988sp"/>
+                android:textSize="13.299988sp" />
         </RadioGroup>
 
 
