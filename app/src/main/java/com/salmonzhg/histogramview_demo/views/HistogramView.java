@@ -42,11 +42,13 @@ public class HistogramView extends HorizontalScrollView {
     private LinearLayout parent;
     private int mIndex = 0;
     private boolean isPlaying = false;
+    private boolean firstTime = false;
     private int mLastSelected = 0;
     private OnSelectListener mSelectListener;
     private OnClickListener mColumnListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
+            int id = v.getId();
             setCheck(v.getId());
         }
     };
@@ -56,14 +58,16 @@ public class HistogramView extends HorizontalScrollView {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case PLAY:
-                    if (mIndex >= llHistogram.getChildCount()) {
+                    if (mIndex - (int) mNum >= llHistogram.getChildCount() - (int) mNum) {
                         // 滑动到最右侧
-                        fullScroll(FOCUS_FORWARD);
+                        fullScroll(FOCUS_RIGHT);
+                        Log.e("4", llHistogram.getChildCount() - (int) mNum - 1 + "--" + mIndex);
                         // 默认选择最右边的那个
-                        ColumnView v = (ColumnView) llHistogram.getChildAt(llHistogram.getChildCount() - 1);
+                        ColumnView v = (ColumnView) llHistogram.getChildAt(llHistogram.getChildCount() - (int) mNum - 1);
+                        firstTime = true;
                         v.performClick();
                         isPlaying = false;
-                        mIndex = 0;
+                        mIndex = (int) mNum;
                         if (mAnimationListener != null)
                             mAnimationListener.onAnimationDone();
                         break;
@@ -198,7 +202,7 @@ public class HistogramView extends HorizontalScrollView {
 
             //滚动至中间位置
             scrollBy(minDivider + mColumnWid * 3 / 8, 0);
-            Log.e("124", current + "--" + llHistogram.getChildCount());
+            Log.e("124", current + "--" + llHistogram.getChildCount() + "  " + llHistogram.getChildAt(current).getId());
             setCheck(llHistogram.getChildAt(current).getId());
             middleItemChangedListener.middleItemChanged(current);
         }
@@ -227,6 +231,7 @@ public class HistogramView extends HorizontalScrollView {
                 ViewGroup.LayoutParams.WRAP_CONTENT);
 //        param.leftMargin = mColumnWid;
         mNum = Math.ceil((halfScreenWidth - mColumnWid / 2) / mColumnWid) - 1;
+        mIndex = (int) mNum;
         addDataHeaderOrFooter(llTime, param, mNum);
         for (int i = 0; i < data.length; i++) {
             TextView view = new TextView(getContext());
@@ -260,6 +265,7 @@ public class HistogramView extends HorizontalScrollView {
                 // view.setShowText(String.valueOf(0));
             }
             view.setId(i + (int) mNum);
+            Log.e("id", (i + (int) mNum) + "");
             view.setColumnColor(mHistogramColor);
             view.setOnClickListener(mColumnListener);
             llHistogram.addView(view);
@@ -392,6 +398,10 @@ public class HistogramView extends HorizontalScrollView {
             return;
         ColumnView columnOld = (ColumnView) llHistogram.getChildAt(mLastSelected);
         columnOld.setSelect(false);
+        if (firstTime) {
+            firstTime = false;
+            position = position + (int) mNum;
+        }
         ColumnView columnNew = (ColumnView) llHistogram.getChildAt(position);
         columnNew.setSelect(true);
         mLastSelected = position;
