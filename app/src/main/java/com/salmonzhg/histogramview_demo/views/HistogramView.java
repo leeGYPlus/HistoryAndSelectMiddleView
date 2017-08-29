@@ -45,10 +45,16 @@ public class HistogramView extends HorizontalScrollView {
     private boolean firstTime = false;
     private int mLastSelected = 0;
     private OnSelectListener mSelectListener;
+    private int currentX = 0;//记录当前滚动的距离
+    private Handler mHandler = new Handler();
+    private int scrollDealy = 50;//滚动监听间隔
+    int current = -1; //当前位于中间item的位置
+    private onMiddleItemChangedListener middleItemChangedListener;
+    double halfScreenWidth; //屏幕的一半宽度
+    private int mNum;
     private OnClickListener mColumnListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            int id = v.getId();
             setCheck(v.getId());
         }
     };
@@ -58,16 +64,15 @@ public class HistogramView extends HorizontalScrollView {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case PLAY:
-                    if (mIndex - (int) mNum >= llHistogram.getChildCount() - (int) mNum) {
+                    if (mIndex -  mNum >= llHistogram.getChildCount() -  mNum) {
                         // 滑动到最右侧
                         fullScroll(FOCUS_RIGHT);
-                        Log.e("4", llHistogram.getChildCount() - (int) mNum - 1 + "--" + mIndex);
                         // 默认选择最右边的那个
                         ColumnView v = (ColumnView) llHistogram.getChildAt(llHistogram.getChildCount() - (int) mNum - 1);
                         firstTime = true;
                         v.performClick();
                         isPlaying = false;
-                        mIndex = (int) mNum;
+                        mIndex = mNum;
                         if (mAnimationListener != null)
                             mAnimationListener.onAnimationDone();
                         break;
@@ -80,17 +85,15 @@ public class HistogramView extends HorizontalScrollView {
             }
         }
     };
-    private double mNum;
+
 
     public HistogramView(Context context) {
         super(context);
-
         init(context, null);
     }
 
     public HistogramView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
         init(context, attrs);
     }
 
@@ -122,11 +125,9 @@ public class HistogramView extends HorizontalScrollView {
             mDateTextColor = a.getColor(R.styleable.HistogramView_date_text_color, DEFAULT_COLOR);
             mHistogramColor = a.getColor(R.styleable.HistogramView_histogram_color, DEFAULT_COLOR);
             int textSizeSp = a.getDimensionPixelSize(R.styleable.HistogramView_date_text_size, -1);
-
-            setColumnPerScreen(columnsPer);
-            setDateTextColor(mDateTextColor);
-            setDateTextSize(textSizeSp);
-
+            setColumnPerScreen(columnsPer);//设置屏幕中的柱状图的个数
+            setDateTextColor(mDateTextColor);//设置文字颜色
+            setDateTextSize(textSizeSp);//文字大小
             a.recycle();
         }
     }
@@ -135,14 +136,8 @@ public class HistogramView extends HorizontalScrollView {
      * 滚动监听runnable
      */
 
-    private int currentX = 0;//记录当前滚动的距离
-    private Handler mHandler = new Handler();
-    private int scrollDealy = 50;//滚动监听间隔
-    int current = -1; //当前位于中间item的位置
-    private onMiddleItemChangedListener middleItemChangedListener;
-    double halfScreenWidth; //屏幕的一半宽度
-    private Runnable scrollRunnable = new Runnable() {
 
+    private Runnable scrollRunnable = new Runnable() {
         @Override
         public void run() {
             if (getScrollX() == currentX) {
@@ -202,7 +197,7 @@ public class HistogramView extends HorizontalScrollView {
 
             //滚动至中间位置
             scrollBy(minDivider + mColumnWid * 3 / 8, 0);
-            Log.e("124", current + "--" + llHistogram.getChildCount() + "  " + llHistogram.getChildAt(current).getId());
+//            Log.e("124", current + "--" + llHistogram.getChildCount() + "  " + llHistogram.getChildAt(current).getId());
             setCheck(llHistogram.getChildAt(current).getId());
             middleItemChangedListener.middleItemChanged(current);
         }
@@ -230,8 +225,8 @@ public class HistogramView extends HorizontalScrollView {
         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(mColumnWid,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
 //        param.leftMargin = mColumnWid;
-        mNum = Math.ceil((halfScreenWidth - mColumnWid / 2) / mColumnWid) - 1;
-        mIndex = (int) mNum;
+        mNum = (int) Math.ceil((halfScreenWidth - mColumnWid / 2) / mColumnWid) - 1;
+        mIndex = mNum;
         addDataHeaderOrFooter(llTime, param, mNum);
         for (int i = 0; i < data.length; i++) {
             TextView view = new TextView(getContext());
@@ -264,24 +259,13 @@ public class HistogramView extends HorizontalScrollView {
                 // 全部为0则不显示数字
                 // view.setShowText(String.valueOf(0));
             }
-            view.setId(i + (int) mNum);
-            Log.e("id", (i + (int) mNum) + "");
+            view.setId(i +  mNum);
+            Log.e("id", (i +  mNum) + "");
             view.setColumnColor(mHistogramColor);
             view.setOnClickListener(mColumnListener);
             llHistogram.addView(view);
         }
         addHeaderOrFooter(llHistogram, param, mNum);
-//        for (int i = 0; i < data.length; i++) {
-//            TextView view = new TextView(getContext());
-//            view.setGravity(Gravity.CENTER);
-//            view.setTextSize(mDateTextSize);
-//            view.setTextColor(mDateTextColor);
-//            view.setLayoutParams(param);
-//            view.setText(data[i].time);
-//            view.setId(i);
-//            view.setOnClickListener(mColumnListener);
-//            llTime.addView(view);
-//        }
         requestLayout();
 
         play();
@@ -290,12 +274,8 @@ public class HistogramView extends HorizontalScrollView {
     private void addDataHeaderOrFooter(LinearLayout linearLayout, LinearLayout.LayoutParams param, double num) {
         for (int i = 0; i < num; i++) {
             TextView view = new TextView(getContext());
-            view.setGravity(Gravity.CENTER);
-            view.setTextSize(mDateTextSize);
-            view.setTextColor(mDateTextColor);
             view.setLayoutParams(param);
             view.setId(i);
-            view.setOnClickListener(mColumnListener);
             linearLayout.addView(view);
         }
     }
@@ -306,8 +286,6 @@ public class HistogramView extends HorizontalScrollView {
             ColumnView view = new ColumnView(getContext());
             view.setLayoutParams(param);
             view.setId(i);
-            view.setColumnColor(mHistogramColor);
-            view.setOnClickListener(mColumnListener);
             linearLayout.addView(view);
         }
     }
@@ -362,6 +340,7 @@ public class HistogramView extends HorizontalScrollView {
 
     }
 
+    //数据的最大值
     private int maxInArray(HistogramEntity[] array) {
         int[] temp = new int[array.length];
         for (int i = 0; i < temp.length; i++) {
@@ -400,13 +379,13 @@ public class HistogramView extends HorizontalScrollView {
         columnOld.setSelect(false);
         if (firstTime) {
             firstTime = false;
-            position = position + (int) mNum;
+            position = position +  mNum;
         }
         ColumnView columnNew = (ColumnView) llHistogram.getChildAt(position);
         columnNew.setSelect(true);
         mLastSelected = position;
         if (mSelectListener != null)
-            mSelectListener.onSelected(position - (int) mNum);
+            mSelectListener.onSelected(position -  mNum);
     }
 
     public void setColumnPerScreen(int columnPerScreen) {
