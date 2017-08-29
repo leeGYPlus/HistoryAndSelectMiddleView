@@ -376,12 +376,16 @@ public class HistogramView extends HorizontalScrollView {
         if (position < 0 || position > llHistogram.getChildCount())
             return;
         ColumnView columnOld = (ColumnView) llHistogram.getChildAt(mLastSelected);
+        TextView textViewOld = (TextView) llTime.getChildAt(mLastSelected);
+        textViewOld.setTextColor(getContext().getResources().getColor(R.color.colorAccent));
         columnOld.setSelect(false);
         if (firstTime) {
             firstTime = false;
             position = position +  mNum;
         }
         ColumnView columnNew = (ColumnView) llHistogram.getChildAt(position);
+        TextView textView = (TextView) llTime.getChildAt(position);
+        textView.setTextColor(Color.YELLOW);
         columnNew.setSelect(true);
         mLastSelected = position;
         if (mSelectListener != null)
