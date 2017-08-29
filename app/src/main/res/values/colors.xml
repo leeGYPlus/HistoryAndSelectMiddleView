@@ -3,5 +3,7 @@
     <color name="colorPrimary">#00BCD4</color>
     <color name="colorPrimaryDark">#0097A7</color>
     <color name="colorAccent">#00BCD4</color>
-    <color name="red">#d40e00</color>
+    <color name="red">#d40e00</color>#00BCD4
+    <color name="text_color">#00BCD4</color>
+    <color name="bac_color">#c4bbb5</color>
 </resources>

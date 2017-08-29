@@ -13,10 +13,10 @@
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
         android:layout_weight="1"
-        android:background="@color/red"
-        app:date_text_color="#00BCD4"
+        android:background="@color/bac_color"
+        app:date_text_color="@color/colorPrimaryDark"
         app:date_text_size="12sp"
-        app:histogram_color="#0097A7" />
+        app:histogram_color="@color/colorPrimary" />
 
     <View
         android:layout_width="2dp"
