@@ -59,12 +59,14 @@ public class HistogramView extends HorizontalScrollView {
         }
     };
     private AnimationListener mAnimationListener;
+    private int firstPosition = -1;
+    private boolean fistIn;
     private Handler mPlayHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case PLAY:
-                    if (mIndex -  mNum >= llHistogram.getChildCount() -  mNum) {
+                    if (mIndex - mNum >= llHistogram.getChildCount() - mNum) {
                         // 滑动到最右侧
                         fullScroll(FOCUS_RIGHT);
                         // 默认选择最右边的那个
@@ -175,42 +177,51 @@ public class HistogramView extends HorizontalScrollView {
             int lastCurrent = current;
             int minDivider = 0;
 
-            //判断距离屏幕中间距离最短的item
-            for (int i = 0; i < llHistogram.getChildCount(); i++) {
-                Log.e("len", llHistogram.getChildCount() + "");
-                int divider = (int) ((llHistogram.getChildAt(i).getX() + 1.0 * llHistogram.getChildAt(i).getWidth() / 2 - currentX) - halfScreenWidth);
-                int absDivider = Math.abs(divider);
-                if (minWidth < 0) {
-                    minWidth = absDivider;
-                } else if (minWidth > absDivider) {
-                    minWidth = absDivider;
-                    minDivider = divider;
-                    current = i;
+            if (!fistIn) {
+                fistIn = true;
+                int divider = (int) ((llHistogram.getChildAt(firstPosition).getX() + 1.0 * llHistogram.getChildAt(firstPosition).getWidth() / 2 - currentX) - halfScreenWidth);
+                scrollBy(divider + mColumnWid * 3 / 8, 0);
+                setCheck(llHistogram.getChildAt(firstPosition).getId());
+                llHistogram.getChildAt(firstPosition).performClick();
+            } else {
+                //判断距离屏幕中间距离最短的item
+                for (int i = 0; i < llHistogram.getChildCount(); i++) {
+                    Log.e("len", llHistogram.getChildCount() + "");
+                    int divider = (int) ((llHistogram.getChildAt(i).getX() + 1.0 * llHistogram.getChildAt(i).getWidth() / 2 - currentX) - halfScreenWidth);
+                    int absDivider = Math.abs(divider);
+                    if (minWidth < 0) {
+                        minWidth = absDivider;
+                    } else if (minWidth > absDivider) {
+                        minWidth = absDivider;
+                        minDivider = divider;
+                        current = i;
+                    }
                 }
-            }
-            //如果中间项变化，则恢复原状
-            if (lastCurrent != current && lastCurrent >= 0) {
+                //如果中间项变化，则恢复原状
+                if (lastCurrent != current && lastCurrent >= 0) {
 //                TextView lastMiddleView = (TextView) llHistogram.getChildAt(lastCurrent);
 //                lastMiddleView.setTextSize(20);
 //                lastMiddleView.setTextColor(Color.RED);
+                }
+
+                //滚动至中间位置
+                scrollBy(minDivider + mColumnWid * 3 / 8, 0);
+//            Log.e("124", current + "--" + llHistogram.getChildCount() + "  " + llHistogram.getChildAt(current).getId());
+                setCheck(llHistogram.getChildAt(current).getId());
             }
 
-            //滚动至中间位置
-            scrollBy(minDivider + mColumnWid * 3 / 8, 0);
-//            Log.e("124", current + "--" + llHistogram.getChildCount() + "  " + llHistogram.getChildAt(current).getId());
-            setCheck(llHistogram.getChildAt(current).getId());
             middleItemChangedListener.middleItemChanged(current);
         }
     }
 
-    public void setData(HistogramEntity[] data) {
+    public void setData(HistogramEntity[] data, int position) {
         if (isPlaying) {
             return;
         }
         if (data == null || data.length == 0) {
             return;
         }
-
+        firstPosition = position;
         isPlaying = true;
 
         mColumnWid = getMeasuredWidth() / mColumnPerScreen;
@@ -259,8 +270,8 @@ public class HistogramView extends HorizontalScrollView {
                 // 全部为0则不显示数字
                 // view.setShowText(String.valueOf(0));
             }
-            view.setId(i +  mNum);
-            Log.e("id", (i +  mNum) + "");
+            view.setId(i + mNum);
+            Log.e("id", (i + mNum) + "");
             view.setColumnColor(mHistogramColor);
             view.setOnClickListener(mColumnListener);
             llHistogram.addView(view);
@@ -381,7 +392,7 @@ public class HistogramView extends HorizontalScrollView {
         columnOld.setSelect(false);
         if (firstTime) {
             firstTime = false;
-            position = position +  mNum;
+            position = position + mNum;
         }
         ColumnView columnNew = (ColumnView) llHistogram.getChildAt(position);
         TextView textView = (TextView) llTime.getChildAt(position);
@@ -389,7 +400,7 @@ public class HistogramView extends HorizontalScrollView {
         columnNew.setSelect(true);
         mLastSelected = position;
         if (mSelectListener != null)
-            mSelectListener.onSelected(position -  mNum);
+            mSelectListener.onSelected(position - mNum);
     }
 
     public void setColumnPerScreen(int columnPerScreen) {

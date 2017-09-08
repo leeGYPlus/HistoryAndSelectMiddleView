@@ -45,10 +45,10 @@ public class MainActivity extends AppCompatActivity implements HistogramView.onM
                 mRadioButtonWeek.setClickable(false);
                 switch (checkedId) {
                     case R.id.radio_week_button:
-                        mHistogram.setData(mData = genRandomWeekData());
+                        mHistogram.setData(mData = genRandomWeekData(), 2);
                         break;
                     case R.id.radio_month_button:
-                        mHistogram.setData(mData = genRandomMonthData());
+                        mHistogram.setData(mData = genRandomMonthData(), 6);
                         break;
                 }
             }
@@ -157,7 +157,8 @@ public class MainActivity extends AppCompatActivity implements HistogramView.onM
     }
 
     @Override
-    public void middleItemChanged(int current) {
+    public void middleItemChanged(int current)
+    {
         Log.e("position", current + "");
 //        mHistogram.getChildAt(current).setBackgroundColor(Color.YELLOW);
     }
