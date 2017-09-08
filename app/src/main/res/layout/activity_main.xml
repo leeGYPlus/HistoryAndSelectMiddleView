@@ -9,14 +9,13 @@
         android:id="@+id/histogram"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
         android:layout_weight="1"
         android:background="@color/bac_color"
         app:date_text_color="@color/colorPrimaryDark"
         app:date_text_size="12sp"
-        app:histogram_color="@color/colorPrimary" />
+        app:histogram_color="@color/colorPrimary"
+        app:histogram_color_grade="@color/red" />
 
     <View
         android:layout_width="2dp"

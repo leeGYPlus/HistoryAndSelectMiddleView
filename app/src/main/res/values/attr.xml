@@ -11,6 +11,7 @@
 
         <attr name="column_per_screen" format="integer"/>
         <attr name="histogram_color" format="color"/>
+        <attr name="histogram_color_grade" format="color"/>
         <attr name="date_text_color" format="color"/>
         <attr name="date_text_size" format="dimension"/>
 

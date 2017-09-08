@@ -26,7 +26,7 @@ import java.util.Arrays;
  * Created by Salmon on 2016/6/20 0020.
  */
 public class HistogramView extends HorizontalScrollView {
-    private static final int DEFAULT_COLUMN_PER_SCREEN = 7;
+    private static final int DEFAULT_COLUMN_PER_SCREEN = 9;
     private static final String[] DEFAULT_DATE_TEXT = new String[]{"一", "二", "三", "四", "五", "六", "日"};
     private static final int DEFAULT_COLOR = 0XFF3F51B5;
     private static final int DEFAULT_TEXT_SIZE = 14;
@@ -36,6 +36,7 @@ public class HistogramView extends HorizontalScrollView {
     private int mColumnWid = 0;
     private int mDateTextColor = DEFAULT_COLOR;
     private int mHistogramColor = DEFAULT_COLOR;
+    private int mHistogramColorGrade = DEFAULT_COLOR;
     private int mDateTextSize = DEFAULT_TEXT_SIZE;
     private LinearLayout llHistogram;
     private LinearLayout llTime;
@@ -126,6 +127,7 @@ public class HistogramView extends HorizontalScrollView {
                     DEFAULT_COLUMN_PER_SCREEN);
             mDateTextColor = a.getColor(R.styleable.HistogramView_date_text_color, DEFAULT_COLOR);
             mHistogramColor = a.getColor(R.styleable.HistogramView_histogram_color, DEFAULT_COLOR);
+            mHistogramColorGrade = a.getColor(R.styleable.HistogramView_histogram_color_grade, DEFAULT_COLOR);
             int textSizeSp = a.getDimensionPixelSize(R.styleable.HistogramView_date_text_size, -1);
             setColumnPerScreen(columnsPer);//设置屏幕中的柱状图的个数
             setDateTextColor(mDateTextColor);//设置文字颜色
@@ -205,7 +207,7 @@ public class HistogramView extends HorizontalScrollView {
                 }
 
                 //滚动至中间位置
-                scrollBy(minDivider + mColumnWid * 3 / 8, 0);
+                scrollBy(minDivider /*+ mColumnWid * 3 / 8*/, 0);
 //            Log.e("124", current + "--" + llHistogram.getChildCount() + "  " + llHistogram.getChildAt(current).getId());
                 setCheck(llHistogram.getChildAt(current).getId());
             }
@@ -236,7 +238,8 @@ public class HistogramView extends HorizontalScrollView {
         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(mColumnWid,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
 //        param.leftMargin = mColumnWid;
-        mNum = (int) Math.ceil((halfScreenWidth - mColumnWid / 2) / mColumnWid) - 1;
+//        mNum = (int) Math.ceil((halfScreenWidth - mColumnWid / 2) / mColumnWid) - 1;
+        mNum = 4;
         mIndex = mNum;
         addDataHeaderOrFooter(llTime, param, mNum);
         for (int i = 0; i < data.length; i++) {
@@ -272,7 +275,7 @@ public class HistogramView extends HorizontalScrollView {
             }
             view.setId(i + mNum);
             Log.e("id", (i + mNum) + "");
-            view.setColumnColor(mHistogramColor);
+            view.setColumnColor(mHistogramColor,mHistogramColorGrade);
             view.setOnClickListener(mColumnListener);
             llHistogram.addView(view);
         }
