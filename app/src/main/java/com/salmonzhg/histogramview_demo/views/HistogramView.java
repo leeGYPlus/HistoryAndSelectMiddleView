@@ -23,6 +23,8 @@ import com.salmonzhg.histogramview_demo.utils.DisplayUtil;
 import java.util.Arrays;
 
 /**
+ *  git push --set-upstream origin newB
+
  * Created by Salmon on 2016/6/20 0020.
  */
 public class HistogramView extends HorizontalScrollView {
