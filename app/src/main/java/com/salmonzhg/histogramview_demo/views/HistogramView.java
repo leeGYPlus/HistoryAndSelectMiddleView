@@ -64,7 +64,7 @@ public class HistogramView extends HorizontalScrollView {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case PLAY:
-                    if (mIndex -  mNum >= llHistogram.getChildCount() -  mNum) {
+                    if (mIndex - mNum >= llHistogram.getChildCount() - mNum) {
                         // 滑动到最右侧
                         fullScroll(FOCUS_RIGHT);
                         // 默认选择最右边的那个
@@ -196,7 +196,7 @@ public class HistogramView extends HorizontalScrollView {
             }
 
             //滚动至中间位置
-            scrollBy(minDivider + mColumnWid * 3 / 8, 0);
+            scrollBy(minDivider + mColumnWid * 3 / 8 - dp2px(20), 0);
 //            Log.e("124", current + "--" + llHistogram.getChildCount() + "  " + llHistogram.getChildAt(current).getId());
             setCheck(llHistogram.getChildAt(current).getId());
             middleItemChangedListener.middleItemChanged(current);
@@ -259,8 +259,8 @@ public class HistogramView extends HorizontalScrollView {
                 // 全部为0则不显示数字
                 // view.setShowText(String.valueOf(0));
             }
-            view.setId(i +  mNum);
-            Log.e("id", (i +  mNum) + "");
+            view.setId(i + mNum);
+            Log.e("id", (i + mNum) + "");
             view.setColumnColor(mHistogramColor);
             view.setOnClickListener(mColumnListener);
             llHistogram.addView(view);
@@ -381,7 +381,7 @@ public class HistogramView extends HorizontalScrollView {
         columnOld.setSelect(false);
         if (firstTime) {
             firstTime = false;
-            position = position +  mNum;
+            position = position + mNum;
         }
         ColumnView columnNew = (ColumnView) llHistogram.getChildAt(position);
         TextView textView = (TextView) llTime.getChildAt(position);
@@ -389,7 +389,7 @@ public class HistogramView extends HorizontalScrollView {
         columnNew.setSelect(true);
         mLastSelected = position;
         if (mSelectListener != null)
-            mSelectListener.onSelected(position -  mNum);
+            mSelectListener.onSelected(position - mNum);
     }
 
     public void setColumnPerScreen(int columnPerScreen) {
