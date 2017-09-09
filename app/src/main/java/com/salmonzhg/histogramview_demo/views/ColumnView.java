@@ -5,8 +5,11 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -28,6 +31,8 @@ public class ColumnView extends View {
     private float mRatio = 0f;
     private int mWid;
     private int mHei;
+    private int color;
+    private int colorGrade;
 
     public ColumnView(Context context) {
         super(context);
@@ -59,7 +64,7 @@ public class ColumnView extends View {
             a.recycle();
         }
 
-        setColumnColor(color);
+//        setColumnColor(color);
     }
 
     @Override
@@ -89,8 +94,14 @@ public class ColumnView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.drawRect(mWid / 8, mHei - mColumnHeight,
-                mWid * 7 / 8, mHei, mColumnPaint);
+        RectF rectF = new RectF(mWid / 8, mHei - mColumnHeight,
+                mWid * 7 / 8, mHei);
+        LinearGradient linearGradient = new LinearGradient(mWid / 8, mHei - mColumnHeight,
+                mWid * 7 / 8, mHei, color, colorGrade, Shader.TileMode.REPEAT);
+        mColumnPaint.setShader(linearGradient);
+        canvas.drawRoundRect(rectF, 10, 10, mColumnPaint);
+//        canvas.drawRect(mWid / 8, mHei - mColumnHeight,
+//                mWid * 7 / 8, mHei, mColumnPaint);
         Rect bounds = new Rect();
         mTextPaint.getTextBounds(mShowText, 0, mShowText.length(), bounds);
         canvas.drawText(mShowText, (mWid - bounds.width()) / 2, mHei - mColumnHeight - dp2px(8), mTextPaint);
@@ -143,8 +154,10 @@ public class ColumnView extends View {
         mTextPaint.setAlpha(0);
     }
 
-    public void setColumnColor(int color) {
-        mColumnPaint.setColor(color);
+    public void setColumnColor(int color, int colorGrade) {
+//        mColumnPaint.setColor(color);
+        this.color = color;
+        this.colorGrade = colorGrade;
         setTextColor(color);
     }
 

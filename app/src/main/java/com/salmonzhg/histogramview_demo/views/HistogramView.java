@@ -38,6 +38,7 @@ public class HistogramView extends HorizontalScrollView {
     private int mColumnWid = 0;
     private int mDateTextColor = DEFAULT_COLOR;
     private int mHistogramColor = DEFAULT_COLOR;
+    private int mHistogramColorGrade = DEFAULT_COLOR;
     private int mDateTextSize = DEFAULT_TEXT_SIZE;
     private LinearLayout llHistogram;
     private LinearLayout llTime;
@@ -126,6 +127,8 @@ public class HistogramView extends HorizontalScrollView {
                     DEFAULT_COLUMN_PER_SCREEN);
             mDateTextColor = a.getColor(R.styleable.HistogramView_date_text_color, DEFAULT_COLOR);
             mHistogramColor = a.getColor(R.styleable.HistogramView_histogram_color, DEFAULT_COLOR);
+            mHistogramColorGrade = a.getColor(R.styleable.HistogramView_histogram_color_grade, DEFAULT_COLOR);
+
             int textSizeSp = a.getDimensionPixelSize(R.styleable.HistogramView_date_text_size, -1);
             setColumnPerScreen(columnsPer);//设置屏幕中的柱状图的个数
             setDateTextColor(mDateTextColor);//设置文字颜色
@@ -263,7 +266,7 @@ public class HistogramView extends HorizontalScrollView {
             }
             view.setId(i + mNum);
             Log.e("id", (i + mNum) + "");
-            view.setColumnColor(mHistogramColor);
+            view.setColumnColor(mHistogramColor,mHistogramColorGrade);
             view.setOnClickListener(mColumnListener);
             llHistogram.addView(view);
         }

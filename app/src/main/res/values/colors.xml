@@ -6,4 +6,5 @@
     <color name="red">#d40e00</color>#00BCD4
     <color name="text_color">#00BCD4</color>
     <color name="bac_color">#c4bbb5</color>
+    <color name="bac_color_grade">#5ae7e2e2</color>
 </resources>
